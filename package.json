@@ -1,5 +1,5 @@
 {
-  "name": "© Erza Bot",
+  "name": "© Chikaluvie",
   "version": "1.1.2",
   "description": "WhatsApp Bot",
   "main": "index.js",
@@ -19,7 +19,7 @@
   "keywords": [
     "whatsapp-bot"
   ],
-  "author": "fifi",
+  "author": "chika",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/inirey/whatsapp-bot/issues"
