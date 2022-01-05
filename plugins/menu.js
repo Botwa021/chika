@@ -41,22 +41,19 @@ Hai, %name! 👋 Welcome have a nice day ✨
 • *XP:* %totalexp
 
 
-    *E R Z A  I N F O*
+    *B O T  I N F O*
 
 • *DATE:* %week %date
 • *DATE ISLAMI*: %dateIslamic
 • *TIME:* %time
 • *RUNTIME:* %uptime
 • *USERS:* %rtotalreg
-• *WEB:* https://erza-info.ml
 
 
     *O W N E R  I N F O*
 
-• *OWNER:* Rey Sekha
-• *GITHUB:* https://github.com/inirey
-• *WEB:* https://reysekha-web.eu.org
-• *INSTAGRAM:* https://instagram.com/_sekhaa
+• *OWNER:* Chika
+• *GITHUB:* https://github.com/chikaeluvie
 
 _-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -170,9 +167,9 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
-    await conn.send2ButtonLoc(m.chat, await (await fetch(fla + 'welcome')).buffer(), text.trim(), 'Customize By Rey ❤️', 'Owner', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
+    await conn.send2ButtonLoc(m.chat, await (await fetch(fla + 'chika bot')).buffer(), text.trim(), 'Customize By Chika ', 'Owner', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
     //await conn.sendButtonLoc(m.chat, text,trim(), await (await fetch(fla + 'menu')).buffer(),
-    //await conn.send2Button(m.chat, text.trim(), 'made with ❤️ by Sekha', 'Owner', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
+    //await conn.send2Button(m.chat, text.trim(), 'made with ❤️ by chika', 'Owner', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
   } catch (e) {
     conn.reply(m.chat, 'Maaf, menu sedang error', m)
     throw e
