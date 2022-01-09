@@ -47,8 +47,8 @@ global.author = 'Mursid:)'
 
 global.wait = '☕ _Tunggu Permintaan kamu sedang di proses..._'
 global.eror = '❌ _Maaf Erorr silahkan hubungi owner_'
-global.fot = '© erzabot'
-global.mut = '❌ _Erza di mute silahkan unmute untuk mengaktifkan kembali'
+global.fot = '© Mursid'
+global.mut = '❌ _Mursid di mute silahkan unmute untuk mengaktifkan kembali'
 global.ban = '❌ _Maaf kamu di banned silahkan hubungi owner_'
 global.fla = 'https://api.zeks.me/api/breakwall?apikey=apivinz&text='
 
