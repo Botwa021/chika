@@ -1,73 +1,77 @@
+let levelling = require('../lib/levelling')
+let { MessageType } = require('@adiwajshing/baileys')
 let fs = require('fs')
 let path = require('path')
-let levelling = require('../lib/levelling')
+let fetch = require('node-fetch')
+let moment = require('moment-timezone')
 let tags = {
-  'main': 'Main',
-  'game': 'Game',
-  'xp': 'Exp & Limit',
-  'sticker': 'Sticker',
-  'kerang': 'Kerang Ajaib',
-  'quotes': 'Quotes',
-  'admin': 'Admin',
-  'group': 'Group',
-  'premium': 'Premium',
-  'internet': 'Internet',
-  'anonymous': 'Anonymous Chat',
-  'nulis': 'MagerNulis & Logo',
-  'downloader': 'Downloader',
-  'tools': 'Tools',
-  'fun': 'Fun',
-  'database': 'Database',
-  'vote': 'Voting',
-  'absen': 'Absen',
-  'quran': 'Al Qur\'an',
-  'jadibot': 'Jadi Bot',
-  'owner': 'Owner',
-  'host': 'Host',
-  'advanced': 'Advanced',
-  'info': 'Info',
-  '': 'No Category',
+    'game': 'G A M E  M E N U',
+    'xp': 'E X P  M E N U',
+    'nsfw': 'N S F W  M E N U',
+    'random': 'R A N D O M  I M A G E',
+    'sticker': 'S T I C K E R',
+    'wallhp': 'W A L L P A P E R',
+    'kerang': 'K E R A N G  M E N U',
+    'quotes': 'T E X T  M E N U',
+    'group': 'G R O U P  M E N U',
+    'internet': 'S E A R C H I N G',
+    'nulis': 'M A K E R  M E N U',
+    'downloader': 'D O W N L O A D',
+    'tools': 'T O O L S  M E N U',
+    'fun': 'F U N  M E N U',
+    'database': 'D A T A B A S E',
+    'vote': 'V O T E  M E N U',
+    'absen': 'A B S E N S I',
+    'quran': 'I S L A M I C',
+    'audio': 'V O I C E  M E N U',
+    'info': 'I N F O  M E N U',
 }
+
 const defaultMenu = {
   before: `
-╭─「 %me 」
-│ Hai, %name!
-│
-│ *Limit*: %limit
-│ *Role*: %role
-│ *Level*: %level
-│ *Exp*: %exp
-│ *Tanggal*: %week, %date
-│ *Waktu*: %time
-│ *Uptime*: %uptime
-│ *User*: %rtotalreg dari %totalreg
-╰────
-╭─「 *Group* 」
-https://chat.whatsapp.com/Chp3CCteNidDUYTq1YeZBL
-╰────
 
-╭─「 *Group Bot* 」
-https://chat.whatsapp.com/LPFQ2X1cnihB0fb8F8cZau
-╰───
+Hai, %name! 👋 Welcome have a nice day ✨
 
-╭─「 *Github* 」
-https://github.com/Nurutomo/wabot-aq
-╰────
+    *I N F O  U S E R S*
+
+• *NAME:* %name
+• *LIMIT:* %limit
+• *ROLE:* %role
+• *LEVEL:* %level %exp / %maxexp
+• *XP:* %totalexp
+
+
+    *B O T  I N F O*
+
+• *DATE:* %week %date
+• *DATE ISLAMI*: %dateIslamic
+• *TIME:* %time
+• *RUNTIME:* %uptime
+• *USERS:* %rtotalreg
+
+
+    *O W N E R  I N F O*
+
+• *OWNER:* Mursid🔥
+• *GITHUB:* https://github.com/Botwa021/chika
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_
+
 %readmore`.trimStart(),
-  header: '╭─「 %category 」',
-  body: '│ • %cmd %islimit %isPremium',
-  footer: '╰────\n',
+  header: '*%category*\n\n',
+  body: '• %cmd',
+  footer: '\n',
   after: `
-*%npmname@^%version*
+*%npmname*
 ${'```%npmdesc```'}
 `,
 }
-let handler = async (m, { conn, usedPrefix: _p }) => {
+let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
   try {
     let package = JSON.parse(await fs.promises.readFile(path.join(__dirname, '../package.json')).catch(_ => '{}'))
-    let { exp, limit, level, role } = global.db.data.users[m.sender]
+    let { exp, limit, level, role, registered } = global.db.data.users[m.sender]
     let { min, xp, max } = levelling.xpRange(level, global.multiplier)
-    let name = conn.getName(m.sender)
+    let name = registered ? global.db.data.users[m.sender].name : conn.getName(m.sender)
     let d = new Date(new Date + 3600000)
     let locale = 'id'
     // d.getTimeZoneOffset()
@@ -106,7 +110,7 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
     let rtotalreg = Object.values(global.db.data.users).filter(user => user.registered == true).length
     let help = Object.values(global.plugins).filter(plugin => !plugin.disabled).map(plugin => {
       return {
-        help: Array.isArray(plugin.tags) ? plugin.help : [plugin.help],
+        help: Array.isArray(plugin.help) ? plugin.help : [plugin.help],
         tags: Array.isArray(plugin.tags) ? plugin.tags : [plugin.tags],
         prefix: 'customPrefix' in plugin,
         limit: plugin.limit,
@@ -114,10 +118,15 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
         enabled: !plugin.disabled,
       }
     })
-    for (let plugin of help)
-      if (plugin && 'tags' in plugin)
-        for (let tag of plugin.tags)
-          if (!(tag in tags) && tag) tags[tag] = tag
+    let groups = {}
+    for (let tag in tags) {
+      groups[tag] = []
+      for (let plugin of help)
+        if (plugin.tags && plugin.tags.includes(tag))
+          if (plugin.help) groups[tag].push(plugin)
+      // for (let tag of plugin.tags)
+      //   if (!(tag in tags)) tags[tag] = tag
+    }
     conn.menu = conn.menu ? conn.menu : {}
     let before = conn.menu.before || defaultMenu.before
     let header = conn.menu.header || defaultMenu.header
@@ -152,15 +161,15 @@ let handler = async (m, { conn, usedPrefix: _p }) => {
       exp: exp - min,
       maxexp: xp,
       totalexp: exp,
-      xp4levelup: max - exp,
+      xp4levelup: max - exp <= 0 ? `Siap untuk *${_p}levelup*` : `${max - exp} XP lagi untuk levelup`,
       github: package.homepage ? package.homepage.url || package.homepage : '[unknown github url]',
       level, limit, name, weton, week, date, dateIslamic, time, totalreg, rtotalreg, role,
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
-await conn.fakeReply(m.chat, 'Loading...', '0@s.whatsapp.net', 'BY MURSID (+6288233832771)', 'status@broadcast')
-    conn.reply(m.chat, text.trim(), m)
-    conn.sendFile(m.chat, './folder/suara.mp3.mp3', 'song.mp3, '', m, false, true { mimetype :' audio/mp4'})
+    await conn.send2ButtonLoc(m.chat, await (await fetch(fla + 'chika bot')).buffer(), text.trim(), 'Customize By Chika ', 'Owner', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
+    //await conn.sendButtonLoc(m.chat, text,trim(), await (await fetch(fla + 'menu')).buffer(),
+    //await conn.send2Button(m.chat, text.trim(), 'made with ❤️ by chika', 'Owner', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
   } catch (e) {
     conn.reply(m.chat, 'Maaf, menu sedang error', m)
     throw e
@@ -183,12 +192,29 @@ handler.exp = 3
 
 module.exports = handler
 
-const more = String.fromCharCode(8206)
-const readMore = more.repeat(4001)
+const more = String.fromCharCode(1)
+const readMore = more.repeat(1)
 
 function clockString(ms) {
   let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
   let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
   let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
   return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
+}
+function ucapan() {
+  const time = moment.tz('Asia/Jakarta').format('HH')
+  res = "Selamat dinihari"
+  if (time >= 4) {
+    res = "Selamat pagi"
+  }
+  if (time > 10) {
+    res = "Selamat siang"
+  }
+  if (time >= 15) {
+    res = "Selamat sore"
+  }
+  if (time >= 18) {
+    res = "Selamat malam"
+  }
+  return res
 }
