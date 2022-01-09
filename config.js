@@ -42,8 +42,8 @@ global.APIKeys = { // APIKey nya disini
 }
 
 // Sticker WM
-global.packname = 'I hope you\'re fine'
-global.author = 'Mursid:)'
+global.packname = 'I hope you are with me'
+global.author = 'Mursid'
 
 global.wait = '☕ _Tunggu Permintaan kamu sedang di proses..._'
 global.eror = '❌ _Maaf Erorr silahkan hubungi owner_'
