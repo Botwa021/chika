@@ -1,15 +1,14 @@
-let fetch = require('node-fetch')
-let handler = async (m, { conn }) => await conn.sendButtonLoc(m.chat, await (await fetch(fla + 'donasi')).buffer(), `
-*D O N A T I O N  O W N E R*
+let handler = async m => m.reply(`
+╭─「 Donasi • Pulsa 」
+│ • Smatfren [088233832771]
+│ • Tri [089612698583]
+╰────
 
-*SAWERIA:* https://saweria.co/inirey
-*TRAKKER:* https://trakteer.id/erzabot/tip
-
-*D O N A T I O N  P E N I L I S*
-
-*SAWERIA:* https://saweria.co/ariffb
-*TRAKKER:* https://trakteer.id/ariffb/tip
-`.trim(), '© Erza Bot', 'Donasi', '.donasi', m)
+╭─「 Donasi • Non Pulsa 」
+│ • Dana [088233832771]
+│ • Ingin Donasi Hubungi Owner:https://bit.ly/3qdDHsX
+╰────
+`.trim()) // Tambah sendiri kalo mau
 handler.help = ['donasi']
 handler.tags = ['info']
 handler.command = /^dona(te|si)$/i
