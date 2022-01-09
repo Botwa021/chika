@@ -1,7 +1,7 @@
 {
-  "name": "Mursid S",
-  "version": "0.2.1",
-  "description": "WhatsApp Bot",
+  "name": "ᴍᴜʀꜱɪᴅ",
+  "version": "2.5.1",
+  "description": "Customizable WhatsApp Bot",
   "main": "index.js",
   "directories": {
     "lib": "lib",
@@ -24,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/inirey/whatsapp-bot/issues"
   },
-  "homepage": "https://github.com/inirey/whatsapp-bot",
+  "homepage": "https://github.com/Botwa021/chika",
   "dependencies": {
     "@adiwajshing/baileys": "^3.5.3",
     "awesome-phonenumber": "^2.54.0",
