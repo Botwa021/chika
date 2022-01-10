@@ -6,7 +6,7 @@ async function handler(m) {
   let njid = 6288233832771 + '@s.whatsapp.net'
   let onW = await this.isOnWhatsApp(njid) || { isBusiness: true }
 
-  let name2 = '🔥'
+  let name2 = '🐼'
   number2 = owner[1].replace(/[^0-9]/g, '')
   let njid2 = 6285362500621 + '@s.whatsapp.net'
   let onW2 = await this.isOnWhatsApp(njid2) || { isBusiness: true }
