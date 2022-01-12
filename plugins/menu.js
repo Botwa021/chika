@@ -188,7 +188,7 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
     if (teks == '404') {
       
     // gunakan ini jika kamu menggunakan whatsapp bisnis
-       return m.reply(`
+       throw `
      ┌〔 DAFTAR MENU 〕
      ├ ${_p + command} all
      ├ ${_p + command} game
@@ -214,7 +214,7 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
      ├ ${_p + command} tanpa kategori
      ├ ${_p + command} owner
      └────  
-         `.trim())
+         `.trim()
     }
     let groups = {}
     for (let tag in tags) {
