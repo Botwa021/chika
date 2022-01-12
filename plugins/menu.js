@@ -188,7 +188,7 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
     if (teks == '404') {
       
     // gunakan ini jika kamu menggunakan whatsapp bisnis
-       throw `
+       return m.reply(`
      ┌〔 DAFTAR MENU 〕
      ├ ${_p + command} all
      ├ ${_p + command} game
@@ -214,7 +214,7 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
      ├ ${_p + command} tanpa kategori
      ├ ${_p + command} owner
      └────  
-         `.trim()
+         `.trim())
     }
     let groups = {}
     for (let tag in tags) {
@@ -265,7 +265,8 @@ let handler = async (m, { conn, usedPrefix: _p, args, command }) => {
       readmore: readMore
     }
     text = text.replace(new RegExp(`%(${Object.keys(replace).sort((a, b) => b.length - a.length).join`|`})`, 'g'), (_, name) => '' + replace[name])
-    await conn.send2ButtonLoc(m.chat, await (await fetch(fla + teks)).buffer(), text.trim(), '© Mei Cans', 'Pemilik Bot', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
+    await conn.fakeReply(m.chat, 'Loading...', '0@s.whatsapp.net', 'BY MURSID (+6288233832771)', 'status@broadcast')
+    conn.send2ButtonLoc(m.chat, await (await fetch(fla + teks)).buffer(), text.trim(), '© Mei Cans', 'Pemilik Bot', `${_p}owner`, 'Donasi', `${_p}donasi`, m)
   } catch (e) {
     conn.reply(m.chat, 'Maaf, menu sedang error', m)
     throw e
